@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le Bobites — Carta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:         oklch(9%  0.008 35);
+      --surface:    oklch(13% 0.008 35);
+      --surface-2:  oklch(17% 0.009 35);
+      --border:     oklch(23% 0.008 35);
+      --gold:       oklch(78% 0.12  85);
+      --gold-dim:   oklch(62% 0.09  85);
+      --sakura:     oklch(80% 0.08  355);
+      --text:       oklch(93% 0.004 80);
+      --text-muted: oklch(65% 0.004 80);
+      --text-dim:   oklch(42% 0.004 80);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Petals ── */
+    .petal {
+      position: fixed;
+      top: -20px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      border-radius: 50% 0 50% 0;
+      background: var(--sakura);
+      animation: petal-fall linear infinite;
+    }
+
+    @keyframes petal-fall {
+      0%   { transform: translateY(0)      rotate(0deg)   translateX(0);   opacity: 0;   }
+      8%   {                                                                 opacity: 0.5; }
+      92%  {                                                                 opacity: 0.2; }
+      100% { transform: translateY(105vh)  rotate(400deg) translateX(70px); opacity: 0;   }
+    }
+
+    /* ── Header ── */
+    .header {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 5rem 2rem 7rem;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .header-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 35%, oklch(20% 0.05 300 / 0.35) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 20% 85%, oklch(16% 0.05 30  / 0.25) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 80% 70%, oklch(14% 0.04 355 / 0.2)  0%, transparent 55%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Torii gate */
+    .torii {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(360px, 70vw);
+      opacity: 0.055;
+      pointer-events: none;
+      z-index: -1;
+      color: var(--text);
+    }
+
+    /* Horizontal stamp lines */
+    .header-stamp {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 200;
+      font-size: clamp(0.7rem, 2vw, 0.85rem);
+      letter-spacing: 0.55em;
+      color: var(--gold-dim);
+      margin-bottom: 2.8rem;
+      opacity: 0.8;
+    }
+
+    .restaurant-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 11vw, 8rem);
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      line-height: 0.95;
+      position: relative;
+    }
+
+    .restaurant-name .le {
+      color: var(--text-muted);
+    }
+
+    .restaurant-name .brand {
+      color: var(--gold);
+      display: block;
+    }
+
+    .tagline {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.6rem, 1.5vw, 0.72rem);
+      letter-spacing: 0.38em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 1.8rem;
+    }
+
+    /* ornamental rule */
+    .rule {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.5rem auto 0;
+      width: min(380px, 75%);
+    }
+
+    .rule::before, .rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+    }
+
+    .rule::before { background: linear-gradient(to right,  transparent, var(--gold-dim)); }
+    .rule::after  { background: linear-gradient(to left,   transparent, var(--gold-dim)); }
+
+    .rule-gem {
+      width: 5px;
+      height: 5px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    .header-date {
+      margin-top: 1.4rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-dim);
+      font-size: 0.58rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    .scroll-cue-line {
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(to bottom, var(--gold-dim), transparent);
+      animation: pulse-line 2.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-line {
+      0%, 100% { opacity: 0.25; }
+      50%       { opacity: 0.9;  }
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: oklch(9% 0.008 35 / 0.88);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      padding: 0 1rem;
+    }
+
+    .nav-link {
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 1.15rem 1.6rem;
+      position: relative;
+      transition: color 220ms ease;
+      cursor: pointer;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 220ms ease;
+    }
+
+    .nav-link:hover       { color: var(--gold); }
+    .nav-link:hover::after,
+    .nav-link.active::after { width: calc(100% - 3.2rem); }
+    .nav-link.active       { color: var(--gold); }
+
+    /* ── Menu ── */
+    .menu {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 0 2rem 8rem;
+    }
+
+    .section { padding-top: 7rem; }
+
+    /* Section header */
+    .section-header {
+      position: relative;
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 200;
+      font-size: clamp(4rem, 12vw, 7rem);
+      color: oklch(93% 0.004 80 / 0.04);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .section-eyebrow {
+      font-size: 0.58rem;
+      letter-spacing: 0.45em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      font-weight: 400;
+      margin-bottom: 0.85rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 6vw, 3.2rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      position: relative;
+    }
+
+    .section-rule {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 1.6rem auto 0;
+      width: min(260px, 50%);
+    }
+
+    .section-rule::before, .section-rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .section-rule-gem {
+      width: 4px;
+      height: 4px;
+      border: 1px solid var(--gold-dim);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ── Dish ── */
+    .dishes { display: flex; flex-direction: column; }
+
+    .dish {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 1.5rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid oklch(23% 0.008 35 / 0.7);
+    }
+
+    .dishes .dish:first-child {
+      border-top: 1px solid oklch(23% 0.008 35 / 0.7);
+    }
+
+    .dish-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.28rem;
+      font-weight: 400;
+      letter-spacing: 0.025em;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    .dish-desc {
+      font-size: 0.71rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      letter-spacing: 0.035em;
+      line-height: 1.75;
+      max-width: 50ch;
+    }
+
+    .dish-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      padding-top: 0.2rem;
+    }
+
+    /* Postre de la casa — special */
+    .dish-special .dish-name {
+      color: var(--gold);
+      font-size: 1.4rem;
+    }
+
+    .dish-special .dish-price {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sakura);
+      padding-top: 0.45rem;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+    }
+
+    .footer-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 200;
+      font-size: 1.5rem;
+      letter-spacing: 0.55em;
+      color: oklch(93% 0.004 80 / 0.18);
+      margin-bottom: 1.8rem;
+    }
+
+    .footer-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 42ch;
+      margin: 0 auto;
+      line-height: 1.85;
+    }
+
+    .footer-sub {
+      margin-top: 2.2rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .footer-gem {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: var(--gold-dim);
+      transform: rotate(45deg);
+      margin: 0 0.8rem;
+      vertical-align: middle;
+    }
+
+    /* ── Reveal animation ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 640ms ease, transform 640ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .nav-link {
+        font-size: 0.56rem;
+        padding: 1.1rem 0.85rem;
+        letter-spacing: 0.15em;
+      }
+      .menu { padding: 0 1.25rem 6rem; }
+      .dish { gap: 1rem; }
+      .section { padding-top: 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cherry blossom petals (JS-generated) -->
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <div class="header-glow" aria-hidden="true"></div>
+
+  <!-- Torii gate silhouette -->
+  <svg class="torii" viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="28"  y="90" width="20" height="130" fill="currentColor"/>
+    <rect x="312" y="90" width="20" height="130" fill="currentColor"/>
+    <!-- Upper crossbeam with curved ends -->
+    <path d="M8 68 Q180 28 352 68 L352 82 Q180 42 8 82 Z" fill="currentColor"/>
+    <!-- Lower crossbeam -->
+    <rect x="38" y="96" width="284" height="13" rx="6.5" fill="currentColor"/>
+    <!-- Small columns on lower crossbeam -->
+    <rect x="72"  y="109" width="10" height="44" fill="currentColor" opacity="0.65"/>
+    <rect x="278" y="109" width="10" height="44" fill="currentColor" opacity="0.65"/>
+  </svg>
+
+  <p class="header-stamp" aria-label="Flor de cerezo, viaje, gastronomía">桜 &nbsp;·&nbsp; 旅 &nbsp;·&nbsp; 美食</p>
+
+  <h1 class="restaurant-name">
+    <span class="le">Le</span>
+    <span class="brand">Bobites</span>
+  </h1>
+
+  <p class="tagline">Cocina de autor &nbsp;·&nbsp; Un viaje por los sabores del mundo</p>
+
+  <div class="rule" aria-hidden="true"><div class="rule-gem"></div></div>
+
+  <p class="header-date" id="header-date"></p>
+
+  <div class="scroll-cue" aria-hidden="true">
+    <span>Carta</span>
+    <div class="scroll-cue-line"></div>
+  </div>
+</header>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav" aria-label="Secciones del menú">
+  <div class="nav-inner">
+    <a href="#entrante"  class="nav-link">Entrante</a>
+    <a href="#ensalada"  class="nav-link">Ensalada</a>
+    <a href="#principal" class="nav-link">Principal</a>
+    <a href="#postre"    class="nav-link">Postre</a>
+  </div>
+</nav>
+
+<!-- ═══ MENU ═══ -->
+<main class="menu">
+
+  <!-- ── ENTRANTE ── -->
+  <section id="entrante" aria-labelledby="title-entrante" class="section">
+    <div class="section-header reveal">
+      <span class="section-jp" aria-hidden="true">前菜</span>
+      <p class="section-eyebrow">Para comenzar el viaje</p>
+      <h2 class="section-title" id="title-entrante">Entrante</h2>
+      <div class="section-rule" aria-hidden="true"><div class="section-rule-gem"></div></div>
+    </div>
+
+    <div class="dishes">
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Bruschetas con Requesón, Cebollinos y Miel</h3>
+          <p class="dish-desc">Pan artesanal de masa madre tostado al momento, requesón fresco de temporada, cebollinos tiernos y un hilo de miel de azahar</p>
+        </div>
+        <p class="dish-price">14 €</p>
+      </article>
+
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Gyoza de Trufa con Salsa Ponzu</h3>
+          <p class="dish-desc">Empanadillas al vapor rellenas de seta shiitake y trufa negra, servidas con ponzu cítrico y jengibre fresco de Kioto</p>
+        </div>
+        <p class="dish-price">16 €</p>
+      </article>
+
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Tataki de Atún con Sésamo y Wasabi</h3>
+          <p class="dish-desc">Lomo de atún rojo del Mediterráneo marcado al fuego vivo, semillas de sésamo tostado y emulsión suave de wasabi de Shizuoka</p>
+        </div>
+        <p class="dish-price">19 €</p>
+      </article>
+
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Ceviche de Vieira al Yuzu</h3>
+          <p class="dish-desc">Vieiras de Galicia en leche de tigre cítrica con yuzu japonés, aguacate de Málaga y crujiente de algas nori</p>
+        </div>
+        <p class="dish-price">18 €</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── ENSALADA ── -->
+  <section id="ensalada" aria-labelledby="title-ensalada" class="section">
+    <div class="section-header reveal">
+      <span class="section-jp" aria-hidden="true">サラダ</span>
+      <p class="section-eyebrow">Del jardín y el mar</p>
+      <h2 class="section-title" id="title-ensalada">Ensalada</h2>
+      <div class="section-rule" aria-hidden="true"><div class="section-rule-gem"></div></div>
+    </div>
+
+    <div class="dishes">
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Shopska Salata</h3>
+          <p class="dish-desc">Tomate maduro, pepino y pimiento de los Balcanes con sirene desmenuzado, aceite de oliva virgen extra y orégano silvestre</p>
+        </div>
+        <p class="dish-price">11 €</p>
+      </article>
+
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Ensalada de Algas Wakame con Vinagreta de Miso</h3>
+          <p class="dish-desc">Algas wakame de Hokkaido con pepino encurtido, semillas de sésamo negro y vinagreta de miso blanco y mirin</p>
+        </div>
+        <p class="dish-price">13 €</p>
+      </article>
+
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Burrata con Trufa Negra y Heirloom</h3>
+          <p class="dish-desc">Burrata cremosa de Puglia sobre lecho de tomates heirloom de temporada, láminas de trufa negra y reducción de balsámico de Módena</p>
+        </div>
+        <p class="dish-price">16 €</p>
+      </article>
+
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Niçoise con Atún Sellado</h3>
+          <p class="dish-desc">Inspirada en los mercados de Niza: atún sellado a la plancha, huevo de codorniz, aceitunas niçoise y judías verdes de temporada</p>
+        </div>
+        <p class="dish-price">15 €</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── PRINCIPAL ── -->
+  <section id="principal" aria-labelledby="title-principal" class="section">
+    <div class="section-header reveal">
+      <span class="section-jp" aria-hidden="true">主菜</span>
+      <p class="section-eyebrow">El corazón de la carta</p>
+      <h2 class="section-title" id="title-principal">Principal</h2>
+      <div class="section-rule" aria-hidden="true"><div class="section-rule-gem"></div></div>
+    </div>
+
+    <div class="dishes">
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Filete de Pollo con Arroz</h3>
+          <p class="dish-desc">Pechuga de pollo de corral a la plancha, arroz jazmín perfumado con hierba limón, salsa de limón y hierbas aromáticas del Mediterráneo</p>
+        </div>
+        <p class="dish-price">22 €</p>
+      </article>
+
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Wagyu A5 con Mantequilla de Trufa y Sake</h3>
+          <p class="dish-desc">Solomillo de wagyu japonés A5 de Miyazaki, mantequilla de trufa negra y reducción de sake añejo de Niigata sobre mirepoix de raíz</p>
+        </div>
+        <p class="dish-price">68 €</p>
+      </article>
+
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Lubina al Vapor Estilo Kyoto</h3>
+          <p class="dish-desc">Lubina salvaje al vapor con caldo dashi perfumado, jengibre en juliana, cebolleta de Nantes y un hilo de aceite de sésamo ahumado</p>
+        </div>
+        <p class="dish-price">32 €</p>
+      </article>
+
+      <article class="dish reveal">
+        <div>
+          <h3 class="dish-name">Risotto de Shiitake y Trufa Blanca de Alba</h3>
+          <p class="dish-desc">Arroz carnaroli con setas shiitake de cultivo lento, parmesano Reggiano de 36 meses y aceite de trufa blanca de Alba</p>
+        </div>
+        <p class="dish-price">28 €</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── POSTRE ── -->
+  <section id="postre" aria-labelledby="title-postre" class="section">
+    <div class="section-header reveal">
+      <span class="section-jp" aria-hidden="true">甘味</span>
+      <p class="section-eyebrow">Para terminar el viaje</p>
+      <h2 class="section-title" id="title-postre">Postre</h2>
+      <div class="section-rule" aria-hidden="true"><div class="section-rule-gem"></div></div>
+    </div>
+
+    <div class="dishes">
+      <article class="dish dish-special reveal">
+        <div>
+          <h3 class="dish-name">Postre de la Casa</h3>
+          <p class="dish-desc">Una sorpresa preparada con todo el cariño del mundo, solo para ti</p>
+        </div>
+        <p class="dish-price">★ Sorpresa</p>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <p class="footer-jp" aria-label="Viaje, amor, gastronomía">旅 &nbsp;·&nbsp; 愛 &nbsp;·&nbsp; 食</p>
+  <p class="footer-quote">
+    "El mundo es un libro, y quienes no viajan<br>solo leen una página."
+  </p>
+  <p class="footer-sub">
+    Le Bobites
+    <span class="footer-gem" aria-hidden="true"></span>
+    Mesa reservada
+    <span class="footer-gem" aria-hidden="true"></span>
+    Solo para ti
+  </p>
+</footer>
+
+<script>
+  // ── Date ──
+  document.getElementById('header-date').textContent =
+    new Date().toLocaleDateString('es-ES', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+  const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Cherry blossom petals ──
+  if (!noMotion) {
+    function spawnPetal() {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      const size = 5 + Math.random() * 7;
+      p.style.cssText = `
+        left: ${Math.random() * 100}vw;
+        width: ${size}px;
+        height: ${size}px;
+        animation-duration: ${9 + Math.random() * 13}s;
+        animation-delay: ${Math.random() * 8}s;
+        border-radius: ${Math.random() > 0.5 ? '50% 0 50% 0' : '0 50% 0 50%'};
+        opacity: 0;
+      `;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 25000);
+    }
+    for (let i = 0; i < 6; i++) setTimeout(spawnPetal, i * 400);
+    setInterval(spawnPetal, 1400);
+  }
+
+  // ── Scroll reveal with stagger ──
+  document.querySelectorAll('.section').forEach(section => {
+    section.querySelectorAll('.dish').forEach((dish, i) => {
+      dish.style.transitionDelay = (i * 90) + 'ms';
+    });
+  });
+
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ── Active nav highlight ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const navObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+
+  sections.forEach(s => navObserver.observe(s));
+</script>
+</body>
+</html>
