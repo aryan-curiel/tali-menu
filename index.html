@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +8,41 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
   <style>
+    /* ── Dark theme (default) ── */
     :root {
-      --bg:         oklch(9%  0.008 35);
-      --surface:    oklch(13% 0.008 35);
-      --surface-2:  oklch(17% 0.009 35);
-      --border:     oklch(23% 0.008 35);
-      --gold:       oklch(78% 0.12  85);
-      --gold-dim:   oklch(62% 0.09  85);
-      --sakura:     oklch(80% 0.08  355);
-      --text:       oklch(93% 0.004 80);
-      --text-muted: oklch(65% 0.004 80);
-      --text-dim:   oklch(42% 0.004 80);
+      --bg:           oklch(9%  0.008 35);
+      --surface:      oklch(13% 0.008 35);
+      --surface-2:    oklch(17% 0.009 35);
+      --border:       oklch(23% 0.008 35);
+      --gold:         oklch(78% 0.12  85);
+      --gold-dim:     oklch(62% 0.09  85);
+      --sakura:       oklch(80% 0.08  355);
+      --text:         oklch(93% 0.004 80);
+      --text-muted:   oklch(65% 0.004 80);
+      --text-dim:     oklch(42% 0.004 80);
+      --nav-bg:       oklch(9%  0.008 35 / 0.88);
+      --dish-border:  oklch(23% 0.008 35 / 0.70);
+      --jp-color:     oklch(93% 0.004 80 / 0.04);
+      --footer-jp:    oklch(93% 0.004 80 / 0.18);
+      --toggle-icon:  "☀︎";
+    }
+
+    /* ── Light theme ── */
+    [data-theme="light"] {
+      --bg:           oklch(97% 0.006 75);
+      --surface:      oklch(94% 0.006 75);
+      --surface-2:    oklch(90% 0.007 75);
+      --border:       oklch(83% 0.006 75);
+      --gold:         oklch(50% 0.14  80);
+      --gold-dim:     oklch(43% 0.11  80);
+      --sakura:       oklch(52% 0.12  350);
+      --text:         oklch(14% 0.008 35);
+      --text-muted:   oklch(36% 0.006 35);
+      --text-dim:     oklch(56% 0.004 35);
+      --nav-bg:       oklch(97% 0.006 75 / 0.93);
+      --dish-border:  oklch(83% 0.006 75 / 0.80);
+      --jp-color:     oklch(14% 0.008 35 / 0.05);
+      --footer-jp:    oklch(14% 0.008 35 / 0.14);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,7 +64,48 @@
       font-weight: 300;
       min-height: 100vh;
       overflow-x: hidden;
+      transition: background-color 400ms ease, color 400ms ease;
     }
+
+    /* ── Theme toggle ── */
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 200;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 250ms ease, border-color 250ms ease, color 250ms ease;
+    }
+
+    .theme-toggle:hover {
+      background: var(--surface-2);
+      border-color: var(--gold-dim);
+    }
+
+    .theme-toggle svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* moon shown in dark, sun shown in light */
+    .icon-sun  { display: none; }
+    .icon-moon { display: block; }
+    [data-theme="light"] .icon-sun  { display: block; }
+    [data-theme="light"] .icon-moon { display: none; }
 
     /* ── Petals ── */
     .petal {
@@ -81,12 +146,19 @@
       background:
         radial-gradient(ellipse 90% 60% at 50% 35%, oklch(20% 0.05 300 / 0.35) 0%, transparent 65%),
         radial-gradient(ellipse 50% 40% at 20% 85%, oklch(16% 0.05 30  / 0.25) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 40% at 80% 70%, oklch(14% 0.04 355 / 0.2)  0%, transparent 55%);
+        radial-gradient(ellipse 50% 40% at 80% 70%, oklch(14% 0.04 355 / 0.20) 0%, transparent 55%);
       pointer-events: none;
       z-index: -1;
+      transition: background 400ms ease;
     }
 
-    /* Torii gate */
+    [data-theme="light"] .header-glow {
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 35%, oklch(88% 0.05 75  / 0.55) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 20% 85%, oklch(91% 0.04 55  / 0.40) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 80% 70%, oklch(90% 0.04 355 / 0.30) 0%, transparent 55%);
+    }
+
     .torii {
       position: absolute;
       bottom: 0;
@@ -99,7 +171,6 @@
       color: var(--text);
     }
 
-    /* Horizontal stamp lines */
     .header-stamp {
       font-family: 'Noto Serif JP', serif;
       font-weight: 200;
@@ -119,14 +190,8 @@
       position: relative;
     }
 
-    .restaurant-name .le {
-      color: var(--text-muted);
-    }
-
-    .restaurant-name .brand {
-      color: var(--gold);
-      display: block;
-    }
+    .restaurant-name .le    { color: var(--text-muted); }
+    .restaurant-name .brand { color: var(--gold); display: block; }
 
     .tagline {
       font-family: 'Montserrat', sans-serif;
@@ -138,7 +203,6 @@
       margin-top: 1.8rem;
     }
 
-    /* ornamental rule */
     .rule {
       display: flex;
       align-items: center;
@@ -153,8 +217,8 @@
       height: 1px;
     }
 
-    .rule::before { background: linear-gradient(to right,  transparent, var(--gold-dim)); }
-    .rule::after  { background: linear-gradient(to left,   transparent, var(--gold-dim)); }
+    .rule::before { background: linear-gradient(to right, transparent, var(--gold-dim)); }
+    .rule::after  { background: linear-gradient(to left,  transparent, var(--gold-dim)); }
 
     .rule-gem {
       width: 5px;
@@ -205,9 +269,10 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: oklch(9% 0.008 35 / 0.88);
+      background: var(--nav-bg);
       backdrop-filter: blur(24px);
       border-bottom: 1px solid var(--border);
+      transition: background 400ms ease, border-color 400ms ease;
     }
 
     .nav-inner {
@@ -257,7 +322,6 @@
 
     .section { padding-top: 7rem; }
 
-    /* Section header */
     .section-header {
       position: relative;
       text-align: center;
@@ -268,7 +332,7 @@
       font-family: 'Noto Serif JP', serif;
       font-weight: 200;
       font-size: clamp(4rem, 12vw, 7rem);
-      color: oklch(93% 0.004 80 / 0.04);
+      color: var(--jp-color);
       position: absolute;
       top: 50%;
       left: 50%;
@@ -328,11 +392,11 @@
       align-items: start;
       gap: 1.5rem;
       padding: 2rem 0;
-      border-bottom: 1px solid oklch(23% 0.008 35 / 0.7);
+      border-bottom: 1px solid var(--dish-border);
     }
 
     .dishes .dish:first-child {
-      border-top: 1px solid oklch(23% 0.008 35 / 0.7);
+      border-top: 1px solid var(--dish-border);
     }
 
     .dish-name {
@@ -365,12 +429,8 @@
       padding-top: 0.2rem;
     }
 
-    /* Postre de la casa — special */
-    .dish-special .dish-name {
-      color: var(--gold);
-      font-size: 1.4rem;
-    }
-
+    /* Postre special */
+    .dish-special .dish-name { color: var(--gold); font-size: 1.4rem; }
     .dish-special .dish-price {
       font-size: 0.68rem;
       letter-spacing: 0.22em;
@@ -391,7 +451,7 @@
       font-weight: 200;
       font-size: 1.5rem;
       letter-spacing: 0.55em;
-      color: oklch(93% 0.004 80 / 0.18);
+      color: var(--footer-jp);
       margin-bottom: 1.8rem;
     }
 
@@ -424,17 +484,14 @@
       vertical-align: middle;
     }
 
-    /* ── Reveal animation ── */
+    /* ── Reveal ── */
     .reveal {
       opacity: 0;
       transform: translateY(18px);
       transition: opacity 640ms ease, transform 640ms ease;
     }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity: 1; transform: none; }
@@ -442,34 +499,44 @@
 
     /* ── Responsive ── */
     @media (max-width: 600px) {
-      .nav-link {
-        font-size: 0.56rem;
-        padding: 1.1rem 0.85rem;
-        letter-spacing: 0.15em;
-      }
-      .menu { padding: 0 1.25rem 6rem; }
-      .dish { gap: 1rem; }
-      .section { padding-top: 5rem; }
+      .nav-link { font-size: 0.56rem; padding: 1.1rem 0.85rem; letter-spacing: 0.15em; }
+      .menu     { padding: 0 1.25rem 6rem; }
+      .dish     { gap: 1rem; }
+      .section  { padding-top: 5rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- Cherry blossom petals (JS-generated) -->
+<!-- Theme toggle -->
+<button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema claro/oscuro">
+  <!-- Sun (shown in light mode) -->
+  <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="5"/>
+    <line x1="12" y1="1"  x2="12" y2="3"/>
+    <line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22"  x2="5.64" y2="5.64"/>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1"  y1="12" x2="3"  y2="12"/>
+    <line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>
+  <!-- Moon (shown in dark mode) -->
+  <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+</button>
 
 <!-- ═══ HEADER ═══ -->
 <header class="header">
   <div class="header-glow" aria-hidden="true"></div>
 
-  <!-- Torii gate silhouette -->
   <svg class="torii" viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <rect x="28"  y="90" width="20" height="130" fill="currentColor"/>
     <rect x="312" y="90" width="20" height="130" fill="currentColor"/>
-    <!-- Upper crossbeam with curved ends -->
     <path d="M8 68 Q180 28 352 68 L352 82 Q180 42 8 82 Z" fill="currentColor"/>
-    <!-- Lower crossbeam -->
     <rect x="38" y="96" width="284" height="13" rx="6.5" fill="currentColor"/>
-    <!-- Small columns on lower crossbeam -->
     <rect x="72"  y="109" width="10" height="44" fill="currentColor" opacity="0.65"/>
     <rect x="278" y="109" width="10" height="44" fill="currentColor" opacity="0.65"/>
   </svg>
@@ -521,7 +588,7 @@
           <h3 class="dish-name">Bruschetas con Requesón, Cebollinos y Miel</h3>
           <p class="dish-desc">Pan artesanal de masa madre tostado al momento, requesón fresco de temporada, cebollinos tiernos y un hilo de miel de azahar</p>
         </div>
-        <p class="dish-price">14 €</p>
+        <p class="dish-price">0 €</p>
       </article>
 
       <article class="dish reveal">
@@ -565,7 +632,7 @@
           <h3 class="dish-name">Shopska Salata</h3>
           <p class="dish-desc">Tomate maduro, pepino y pimiento de los Balcanes con sirene desmenuzado, aceite de oliva virgen extra y orégano silvestre</p>
         </div>
-        <p class="dish-price">11 €</p>
+        <p class="dish-price">0 €</p>
       </article>
 
       <article class="dish reveal">
@@ -609,7 +676,7 @@
           <h3 class="dish-name">Filete de Pollo con Arroz</h3>
           <p class="dish-desc">Pechuga de pollo de corral a la plancha, arroz jazmín perfumado con hierba limón, salsa de limón y hierbas aromáticas del Mediterráneo</p>
         </div>
-        <p class="dish-price">22 €</p>
+        <p class="dish-price">0 €</p>
       </article>
 
       <article class="dish reveal">
@@ -682,9 +749,21 @@
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
+  // ── Theme toggle ──
+  const html   = document.documentElement;
+  const toggle = document.getElementById('theme-toggle');
+  const saved  = localStorage.getItem('le-bobites-theme') || 'dark';
+  html.setAttribute('data-theme', saved);
+
+  toggle.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('le-bobites-theme', next);
+  });
+
+  // ── Petals ──
   const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ── Cherry blossom petals ──
   if (!noMotion) {
     function spawnPetal() {
       const p = document.createElement('div');
@@ -724,7 +803,7 @@
 
   document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-  // ── Active nav highlight ──
+  // ── Active nav ──
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
 
